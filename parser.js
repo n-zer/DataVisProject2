@@ -1,4 +1,4 @@
-'use script'
+'use strict'
 google.charts.load("current", {packages:['corechart']});
 document.querySelector("#files").addEventListener('change', function(e){
 	var modelFailures = {};
@@ -84,8 +84,8 @@ document.querySelector("#files").addEventListener('change', function(e){
 
 				//failures*100*365/driveDays
 				modelData[key] = modelFailures[key]*100*365/modelDays[key];
-				if(modelDays[key] > 45 && modelData[key]>0 && modelData[key] <100)
-					data.addRow([key,(modelFailures[key]/(modelDays[key]/365))*100]);
+				//if(modelDays[key] > 45 && modelData[key]>0 && modelData[key] <100)
+				//	data.addRow([key,(modelFailures[key]/(modelDays[key]/365))*100]);
 				/*modelData[key] = {
 					failureRate: modelFailures[key]*100*365/modelDays[key],
 					failures: modelFailures[key],
@@ -93,6 +93,7 @@ document.querySelector("#files").addEventListener('change', function(e){
 				};*/
 				
 			}
+			console.log(JSON.stringify(modelData));
 			var view = new google.visualization.DataView(data);
 			view.setColumns([0, 1,
                   { calc: "stringify",

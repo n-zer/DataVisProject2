@@ -3,8 +3,8 @@
 google.charts.load("current", {packages:['corechart']});
 google.charts.setOnLoadCallback(function(){
 	var data = new google.visualization.DataTable();
-	data.addColumn('string','Models');
-	data.addColumn('number','Failure Rates');
+	data.addColumn('string','Model');
+	data.addColumn('number','Failure Rate');
 
 	for(var model in cleanedData){
 		if(cleanedData[model]>0 && cleanedData[model] <100)
@@ -19,8 +19,8 @@ google.charts.setOnLoadCallback(function(){
 
 	var options = {
 		title: "Failure Rate of Popular Harddrive brands",
-		width: 600,
-		height: 400,
+		width: 1600,
+		height: 800,
 		bar: {groupWidth: "95%"},
 		legend: { position: "none" },
 		series: {

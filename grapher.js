@@ -7,8 +7,9 @@ google.charts.setOnLoadCallback(function(){
 	data.addColumn('number','Failure Rate');
 
 	for(var model in cleanedData){
-		if(cleanedData[model]>0 && cleanedData[model] <100)
-			data.addRow([model,cleanedData[model]]);
+		var modelData = cleanedData[model];
+		if(modelData.failHours)//modelData.failureRate>0 && modelData.driveDays>100 && modelData.failureRate<100)
+			data.addRow([model,(modelData.failHours/8760)/modelData.failures]);
 	}
 	var view = new google.visualization.DataView(data);
 	view.setColumns([0, 1,

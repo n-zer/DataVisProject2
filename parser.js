@@ -4,6 +4,8 @@ document.querySelector("#files").addEventListener('change', function(e){
 	var modelFailures = {};
 	var modelDays = {};
 	var modelData = {};
+	var modelBrands = {};
+	var modelFailHours = {};
 	var files = e.target.files;
 	var fileCount = 0;
 
@@ -48,6 +50,18 @@ document.querySelector("#files").addEventListener('change', function(e){
 			var modelNumber = commasplit[2];
 			var failure = commasplit[4];
 
+			var brand;
+
+			if(/^[Tt][Oo][Ss][Hh][Ii][Bb][Aa].*/.test(modelNumber)){
+				brand = "Toshiba";
+			}
+			else if(/^[Ww][Dd][Cc].*/.test(modelNumber) || /^[Hh][Gg][Ss][Tt]/.test(modelNumber)){
+				brand = "Western Digital"
+			}
+			else if(/^[Ss][Tt]/.test(modelNumber)){
+				brand = "Seagate";
+			}
+
 			//add defaults if this is the first time we've seen this model
 			if(isNaN(modelDays[modelNumber]))
 			{
@@ -55,12 +69,18 @@ document.querySelector("#files").addEventListener('change', function(e){
 				modelFailures[modelNumber] = 0;
 			}
 
+			modelBrands[key] = brand;
+
 			//increment day counter for this model
 			modelDays[modelNumber]++;
 
 			//if the drive failed, increment failure counter
-			if(failure == 1)
+			if(failure == 1){
 				modelFailures[modelNumber]++;
+				if(!modelFailHours[modelNumber])
+					modelFailHours[modelNumber] = 0;
+				modelFailHours[modelNumber]+=Number(commasplit[20]);
+			}
 		}
 
 		//increment file counter
@@ -83,18 +103,20 @@ document.querySelector("#files").addEventListener('change', function(e){
 
 
 				//failures*100*365/driveDays
-				modelData[key] = modelFailures[key]*100*365/modelDays[key];
+				//modelData[key] = modelFailures[key]*100*365/modelDays[key];
 				//if(modelDays[key] > 45 && modelData[key]>0 && modelData[key] <100)
 				//	data.addRow([key,(modelFailures[key]/(modelDays[key]/365))*100]);
-				/*modelData[key] = {
+				modelData[key] = {
+					brand:modelBrands[key],
 					failureRate: modelFailures[key]*100*365/modelDays[key],
 					failures: modelFailures[key],
-					driveDayrs:modelDays[key]
-				};*/
+					driveDays:modelDays[key],
+					failHours:modelFailHours[key]
+				};
 				
 			}
 			console.log(JSON.stringify(modelData));
-			var view = new google.visualization.DataView(data);
+			/*var view = new google.visualization.DataView(data);
 			view.setColumns([0, 1,
                   { calc: "stringify",
                     sourceColumn: 1,
@@ -122,7 +144,7 @@ document.querySelector("#files").addEventListener('change', function(e){
 			};
 			//var options = {};
 			var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
-			chart.draw(view, options);
+			chart.draw(view, options);*/
 		}
 	}
 });

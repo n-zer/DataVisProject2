@@ -6,6 +6,7 @@ document.querySelector("#files").addEventListener('change', function(e){
 	var modelData = {};
 	var modelBrands = {};
 	var modelFailHours = {};
+	var modelCapacity = {};
 	var files = e.target.files;
 	var fileCount = 0;
 
@@ -46,6 +47,7 @@ document.querySelector("#files").addEventListener('change', function(e){
 
 			//get data from line
 			//SMART 9 raw = 20
+			var capacity = commasplit[3];
 			var serialNumber = commasplit[1];
 			var modelNumber = commasplit[2];
 			var failure = commasplit[4];
@@ -55,11 +57,14 @@ document.querySelector("#files").addEventListener('change', function(e){
 			if(/^[Tt][Oo][Ss][Hh][Ii][Bb][Aa].*/.test(modelNumber)){
 				brand = "Toshiba";
 			}
-			else if(/^[Ww][Dd][Cc].*/.test(modelNumber) || /^[Hh][Gg][Ss][Tt]/.test(modelNumber)){
+			else if(/^[Ww][Dd][Cc].*/.test(modelNumber) || /^[Hh][Gg][Ss][Tt].*/.test(modelNumber)){
 				brand = "Western Digital"
 			}
-			else if(/^[Ss][Tt]/.test(modelNumber)){
+			else if(/^[Ss][Tt].*/.test(modelNumber)){
 				brand = "Seagate";
+			}
+			else if(/^[Hh][Ii][Tt][Aa][Cc][Hh][Ii].*/.test(modelNumber)){
+				brand = "Hitachi";
 			}
 
 			//add defaults if this is the first time we've seen this model
@@ -69,7 +74,9 @@ document.querySelector("#files").addEventListener('change', function(e){
 				modelFailures[modelNumber] = 0;
 			}
 
-			modelBrands[key] = brand;
+			modelBrands[modelNumber] = brand;
+
+			modelCapacity[modelNumber] = capacity;
 
 			//increment day counter for this model
 			modelDays[modelNumber]++;
@@ -108,6 +115,7 @@ document.querySelector("#files").addEventListener('change', function(e){
 				//	data.addRow([key,(modelFailures[key]/(modelDays[key]/365))*100]);
 				modelData[key] = {
 					brand:modelBrands[key],
+					capacity:modelCapacity[key],
 					failureRate: modelFailures[key]*100*365/modelDays[key],
 					failures: modelFailures[key],
 					driveDays:modelDays[key],

@@ -70,7 +70,7 @@ function drawChart(){
 			var lifetime = (modelData.failHours/8760)/modelData.failures;
 			var capacity = (modelData.capacity>=1e12)? Number(Math.floor(10*modelData.capacity/1e12)/10)+"TB" : Number(Math.floor(10*modelData.capacity/1e9)/10)+"GB";
 			if(modelData.failHours && modelData.failures>0)//modelData.failureRate>0 && modelData.driveDays>100 && modelData.failureRate<100)
-				dataArray.push([model,lifetime,color,"<div style='font-family:Arial;'><h4 >"+brand+" - "+ model+"</h4> Capacity: "+capacity+"<br><br>Click to google</div>",Math.floor(10*lifetime)/10]);
+				dataArray.push([model+" - "+capacity,lifetime,color,"<div style='font-family:Arial;'><h4 >"+brand+" - "+ model+"</h4> Capacity: "+capacity+"<br><br>Click to google</div>",Math.floor(10*lifetime)/10]);
 		}
 	}
 	data.addRows(dataArray);
@@ -83,7 +83,7 @@ function drawChart(){
 	        3]);
 
 	var options = {
-		title: "Hard drive lifetime in years by model",
+		title: "Average hard drive lifetimes",
 		width: .985* Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
 		height: .9*Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
 		bar: {groupWidth: "90%"},

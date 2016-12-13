@@ -4,12 +4,32 @@
 	<meta charset="utf-8" />
 	<title>Hard drive data parser</title>
 	<style type="text/css">
+		.strokeme{
+		    text-shadow:
+		    -1px -1px 0 #000,
+		    1px -1px 0 #000,
+		    -1px 1px 0 #000,
+		    1px 1px 0 #000;  
+		}
+		#legend{
+			width:70%;
+			margin-top: :auto;
+			margin-right: auto;
+			margin-bottom: auto;
+			margin-left: auto;
+		}
 	</style>
 	
 </head>
-<body>
-	<input type="file" id="files" name="files[]" multiple />
+<body onresize="drawChart()">
+	<!--<input type="file" id="files" name="files[]" multiple />-->
 	<div id="columnchart_values"></div>
+	<div id="legend" style="font-family:Arial">
+		<input type="checkbox" onchange="filterToggle('Toshiba')" checked><span style='color:#00aa00'><strong>Toshiba<strong></span>
+		<input type="checkbox" onchange="filterToggle('Seagate')" checked><span  style='color:#aa0000'>Seagate</span>
+		<input type="checkbox" onchange="filterToggle('Hitachi')" checked><span  style='color:#6600aa'>Hitachi</span>
+		<input type="checkbox" onchange="filterToggle('Western Digital')" checked><span  style='color:#0000aa'>Western Digital</span>
+	</div>
 	<div id="info"></div>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript" src="2016 q2 data.js"></script>
